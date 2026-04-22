@@ -108,19 +108,14 @@ class Renderer(
             }
 
             override fun paintGL() {
-                if (isMacOS()) {
-                    val renderWidth = framebufferWidth.takeIf { it > 0 } ?: width
-                    val renderHeight = framebufferHeight.takeIf { it > 0 } ?: height
+                val renderWidth =
+                    if (isMacOS()) framebufferWidth.takeIf { it > 0 } ?: width else framebufferWidth
+                val renderHeight =
+                    if (isMacOS()) framebufferHeight.takeIf { it > 0 } ?: height else framebufferHeight
 
-                    this@Renderer.reshape(renderWidth, renderHeight)
-                    if (renderWidth > 0 && renderHeight > 0) {
-                        this@Renderer.display(this)
-                    }
-                } else {
-                    this@Renderer.reshape(framebufferWidth, framebufferHeight)
-                    if (width > 0 && height > 0) {
-                        this@Renderer.display(this)
-                    }
+                this@Renderer.reshape(renderWidth, renderHeight)
+                if (renderWidth > 0 && renderHeight > 0) {
+                    this@Renderer.display(this)
                 }
             }
 
